@@ -13,6 +13,10 @@ from .serializers import ExcelReportSerializer
 from .services import FastAPIClient
 from django.core.files.base import ContentFile
 import asyncio
+from asgiref.sync import sync_to_async
+
+import logging
+logger = logging.getLogger(__name__)
 
 class ExcelReportViewSet(viewsets.ViewSet):
     def list(self, request):

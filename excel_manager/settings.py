@@ -122,10 +122,43 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+from celery.schedules import crontab
+
+INSTALLED_APPS = [
+    ...
+]
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CELERY_BEAT_SCHEDULE = {
     'fetch-daily-reports': {
-        'task': 'app.tasks.fetch_daily_reports',
+        'task': 'reports.tasks.fetch_daily_reports',  # Cambiado de app.tasks a reports.tasks
         'schedule': crontab(hour=5, minute=0),
+    },
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
     },
 }
