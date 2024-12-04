@@ -121,3 +121,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+CELERY_BEAT_SCHEDULE = {
+    'fetch-daily-reports': {
+        'task': 'app.tasks.fetch_daily_reports',
+        'schedule': crontab(hour=5, minute=0),
+    },
+}
